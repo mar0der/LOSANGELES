@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BalloonsPops
+﻿namespace BalloonsPops
 {
+    using System.Collections.Generic;
+
     class PersonScoreComparer : IComparer<Person>
     {
         public int Compare(Person x, Person y)

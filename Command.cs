@@ -8,17 +8,17 @@ namespace BalloonsPops
     class Command
     {
 
-        string c;
+        string command;
 
         public string Value
         {
             get
             {
-                return this.c;
+                return this.command;
             }
             set
             {
-                this.c = value;
+                this.command = value;
             }
         }
 

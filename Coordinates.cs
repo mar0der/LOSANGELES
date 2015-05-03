@@ -76,7 +76,7 @@ namespace BalloonsPops
                 }
                 else
                 {
-                    Console.WriteLine("Wrong y coordinates");
+                    Console.WriteLine("Wrong y coordinate");
                     return false;
                 }
             }
