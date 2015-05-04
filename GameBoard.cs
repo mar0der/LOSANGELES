@@ -9,7 +9,7 @@ namespace BalloonsPops
     {
         char[,] gb = new char[25, 8];
         int count = 0;
-        int counter = 50;
+        int remainingBaloons = 50;
         public int ShootCounter
         {
             get
@@ -21,14 +21,14 @@ namespace BalloonsPops
         {
             get
             {
-                return counter;
+                return remainingBaloons;
             }
         }
 
         public void GenerateNewGame()
         {
             Console.WriteLine("Welcome to “Balloons Pops” game. Please try to pop the balloons. Use 'top' to view the top scoreboard, 'restart' to start a new game and 'exit' to quit the game.");
-            counter = 50;
+            remainingBaloons = 50;
             FillBlankGameBoard();
             Random random = new Random();
             Coordinates c = new Coordinates();
@@ -143,14 +143,14 @@ namespace BalloonsPops
             }
 
             AddNewBaloonToGameBoard(c, '.');
-            counter--;
+            remainingBaloons--;
 
             tempCoordinates.X = c.X - 1;
             tempCoordinates.Y = c.Y;
             while (currentBaloon == get(tempCoordinates))
             {
                 AddNewBaloonToGameBoard(tempCoordinates, '.');
-                counter--;
+                remainingBaloons--;
                 tempCoordinates.X--;
             }
 
@@ -159,7 +159,7 @@ namespace BalloonsPops
             while (currentBaloon == get(tempCoordinates))
             {
                 AddNewBaloonToGameBoard(tempCoordinates, '.');
-                counter--;
+                remainingBaloons--;
                 tempCoordinates.X++;
             }
 
@@ -169,7 +169,7 @@ namespace BalloonsPops
             while (currentBaloon == get(tempCoordinates))
             {
                 AddNewBaloonToGameBoard(tempCoordinates, '.');
-                counter--;
+                remainingBaloons--;
                 tempCoordinates.Y--;
             }
 
@@ -178,7 +178,7 @@ namespace BalloonsPops
             while (currentBaloon == get(tempCoordinates))
             {
                 AddNewBaloonToGameBoard(tempCoordinates, '.');
-                counter--;
+                remainingBaloons--;
                 tempCoordinates.Y++;
             }
 

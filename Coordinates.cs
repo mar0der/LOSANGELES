@@ -14,11 +14,16 @@ namespace BalloonsPops
         {
             get
             {
-                return x;
+                return this.x;
             }
             set
             {
-                if (value >= 0 && value <= 9) x = value;
+                if (value < 0 || value > 9)
+                {
+                    throw new ArgumentOutOfRangeException("X must be between 0 and 9.");
+                }
+
+                this.x = value;
             }
         }
 
@@ -30,7 +35,12 @@ namespace BalloonsPops
             }
             set
             {
-                if (value >= 0 && value <= 4) y = value;
+                if (value < 0 || value > 4)
+                {
+                    throw new ArgumentOutOfRangeException("Y must be between 0 and 4.");
+                }
+
+                this.y = value;
             }
         }
 
