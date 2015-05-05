@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace BalloonsPops.Data
+﻿namespace BalloonsPops.Data
 {
     using BalloonsPops.Interfaces;
 
