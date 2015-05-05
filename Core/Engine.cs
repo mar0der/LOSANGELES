@@ -16,17 +16,39 @@ namespace BalloonsPops
     {
         private bool isGameRunning = true;
         private ConsoleRenderer consoleRenderer;
+        private Player player;
+        private TopPlayers topPlayers;
+        
+
         public Engine()
         {
-            var gameBoardArray = GameBoardGenerator.GenerateGameBoard(Config.GameBoardHeight, Config.GameBoardWidth, Config.MaxColorCount);
-            this.GameBoard = new GameBoard(gameBoardArray);
-            this.consoleRenderer = new ConsoleRenderer();
         }
 
         public GameBoard GameBoard { get; set; }
 
         public void Run()
         {
+            topPlayers = TopPlayers.Instance;
+
+            while (true)
+            {
+                try
+                {
+                    Console.Write("Please enter your name:");
+                    var name = Console.ReadLine();
+                    player = new Player(name);
+                    break;
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("error");
+                    //TODO: catch all errors
+                }
+            }
+
+            this.StartNewGame();
+            this.consoleRenderer = new ConsoleRenderer();
+            
             while (isGameRunning)
             {
                 this.ExecuteLoop();
@@ -36,6 +58,9 @@ namespace BalloonsPops
         protected virtual void ExecuteLoop()
         {
             //Render All Objects
+            Console.Clear();
+            this.PrintStaticText();
+            this.PrintCurrentScore();
             this.consoleRenderer.Render(this.GameBoard);
             //Read Input
             this.ExecuteCommand(this.ReadCommand());
@@ -60,7 +85,7 @@ namespace BalloonsPops
                     //TODO: Show Hightscore
                     break;
                 case "restart":
-                    //TODO: Restart da game
+                    this.StartNewGame();
                     break;
                 default:
                     int[] cordinates = CordinateParser(command);
@@ -84,6 +109,39 @@ namespace BalloonsPops
             throw new ApplicationException("Invalid command.");
         }
 
+        private void PrintStaticText()
+        {
+            Console.WriteLine("Welcome to \"Balloons Pops\" game. Please try to pop the balloons. Use 'top' to view the top scoreboard,'restart' to start a new game and 'exit' to quit the game.");
+        }
+
+        private void PrintCurrentScore()
+        {
+            Console.WriteLine("Your moves: {0}", player.CurrentMoves);
+        }
+
+        private bool IsGameOver()
+        {
+            var isGameOver = true;
+            for (int row = 0; row < this.GameBoard.Entities.GetLength(0); row++)
+            {
+                for (int col = 0; col < this.GameBoard.Entities.GetLength(1); col++)
+                {
+                    if (this.GameBoard.Entities[row, col].Symbol != ".")
+                    {
+                        isGameOver = false;
+                    }
+                }
+            }
+            return isGameOver;
+        }
+
+        private void StartNewGame()
+        {
+            this.player.CurrentMoves = 0;
+            var gameBoardArray = GameBoardGenerator.GenerateGameBoard(Config.GameBoardHeight, Config.GameBoardWidth, Config.MaxColorCount);
+            this.GameBoard = new GameBoard(gameBoardArray);
+        }
+
         private void Shoot(int[] coordinates)
         {
             var gameBoard = this.GameBoard.Entities;
@@ -92,8 +150,14 @@ namespace BalloonsPops
             this.PopLeft(gameBoard, coordinates);
             this.PopRight(gameBoard, coordinates);
             this.Pop(gameBoard[coordinates[1], coordinates[0]]);
-            Console.Clear();
             this.GameBoard.Drop();
+            this.player.CurrentMoves++;
+            if (IsGameOver())
+            {
+                Console.WriteLine("Game Over");
+                this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
+                this.StartNewGame();
+            }
 
         }
 

@@ -53,6 +53,8 @@
     <Compile Include="Data\Coordinates1.cs" />
     <Compile Include="Data\GameBoard.cs" />
     <Compile Include="BaloonsPopGame.cs" />
+    <Compile Include="Data\Player.cs" />
+    <Compile Include="Data\TopPlayers.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IGameBoard.cs" />
     <Compile Include="Interfaces\IRendered.cs" />
