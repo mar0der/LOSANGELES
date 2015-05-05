@@ -1,6 +1,6 @@
 ﻿namespace BalloonsPops
 {
-    public class BaloonsPopGame
+    public class BaloonPopsGame
     {
         private static void Main(string[] args)
         {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaloonsPopGame", "BaloonsPopGame.csproj", "{A1269EF5-33BD-4CAA-927A-AFA7C821B940}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaloonsPopsGame", "BaloonsPopsGame.csproj", "{A1269EF5-33BD-4CAA-927A-AFA7C821B940}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaloonsPopGame.Tests", "..\BaloonsPopGame.Tests\BaloonsPopGame.Tests.csproj", "{4187EAA5-0882-48D5-A200-F2A4E11325CA}"
 EndProject

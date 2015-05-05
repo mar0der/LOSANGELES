@@ -49,7 +49,7 @@
     <Compile Include="Data\Color.cs" />
     <Compile Include="Data\Config.cs" />
     <Compile Include="Data\GameBoard.cs" />
-    <Compile Include="BaloonsPopGame.cs" />
+    <Compile Include="BaloonPopsGame.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="Data\TopPlayers.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
