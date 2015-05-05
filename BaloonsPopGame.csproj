@@ -43,14 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command.cs" />
-    <Compile Include="Coordinates.cs" />
+    <Compile Include="Core\ColorFactory.cs" />
+    <Compile Include="Core\Command.cs" />
+    <Compile Include="Core\GameBoardGenerator.cs" />
+    <Compile Include="Data\Baloon.cs" />
+    <Compile Include="Data\Color.cs" />
+    <Compile Include="Data\Config.cs" />
+    <Compile Include="Data\Coordinates.cs" />
+    <Compile Include="Data\Coordinates1.cs" />
+    <Compile Include="Data\GameBoard.cs" />
+    <Compile Include="BaloonsPopGame.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IGameBoard.cs" />
+    <Compile Include="Interfaces\IRendered.cs" />
+    <Compile Include="Utilities\ConsoleRenderer.cs" />
     <Content Include="TopScore.txt" />
-    <Compile Include="GameBoard.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="PersonScoreComparer.cs" />
+    <Compile Include="Core\Engine.cs" />
+    <Compile Include="Data\GameBoard1.cs" />
+    <Compile Include="Data\Person.cs" />
+    <Compile Include="Core\PersonScoreComparer.cs" />
     <Compile Include="Baloons.cs" />
-    <Compile Include="TopScore.cs" />
+    <Compile Include="Data\TopScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
