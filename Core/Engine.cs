@@ -92,6 +92,7 @@ namespace BalloonsPops
             this.PopLeft(gameBoard, coordinates);
             this.PopRight(gameBoard, coordinates);
             this.Pop(gameBoard[coordinates[1], coordinates[0]]);
+            Console.Clear();
             this.GameBoard.Drop();
 
         }
