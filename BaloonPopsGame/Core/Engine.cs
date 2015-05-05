@@ -209,7 +209,7 @@ namespace BalloonsPops
             }
         }
         /// <summary>
-        /// Checks the unders baloons from the current selected and take them down
+        /// Checks if the down baloons is the same as the shooted one and take them down
         /// </summary>
         /// <param name="gameBoard">game field</param>
         /// <param name="coordinates">entared coordinates</param>
@@ -232,7 +232,7 @@ namespace BalloonsPops
             }
         }
         /// <summary>
-        /// Checks the left side baloons from the current selected and teka them down
+        /// Checks the left side baloons if it is the same like the shooted one and take them down
         /// </summary>
         /// <param name="gameBoard">game field</param>
         /// <param name="coordinates">entared coordinates</param>
@@ -254,7 +254,11 @@ namespace BalloonsPops
                 }
             }
         }
-
+        /// <summary>
+        /// Checks the right side baloons if it is the same like the shooted one and take them down
+        /// </summary>
+        /// <param name="gameBoard">game field</param>
+        /// <param name="coordinates">entared coordinates</param>
         private void PopRight(IEntity[,] gameBoard, int[] coordinates)
         {
             int col = coordinates[0];
@@ -273,7 +277,10 @@ namespace BalloonsPops
                 }
             }
         }
-
+        /// <summary>
+        /// Replace the shooted baloon with the dot
+        /// </summary>
+        /// <param name="entity">current shooted baloon</param>
         private void Pop(IEntity entity)
         {
             entity.Color.ConsoleColor = ConsoleColor.White;
