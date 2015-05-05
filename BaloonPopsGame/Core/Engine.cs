@@ -14,6 +14,7 @@ namespace BalloonsPops
 
     public class Engine
     {
+
         private bool isGameRunning = true;
         private ConsoleRenderer consoleRenderer;
         private Player player;
@@ -25,7 +26,9 @@ namespace BalloonsPops
         }
 
         public GameBoard GameBoard { get; set; }
-
+        /// <summary>
+        /// The Game starting loop
+        /// </summary>
         public void Run()
         {
             topPlayers = TopPlayers.Instance;
@@ -54,7 +57,9 @@ namespace BalloonsPops
                 this.ExecuteLoop();
             }
         }
-
+        /// <summary>
+        /// Method that controll all operations in the game loop
+        /// </summary>
         protected virtual void ExecuteLoop()
         {
             //Render All Objects
@@ -67,13 +72,20 @@ namespace BalloonsPops
             //some logc
         }
 
+        /// <summary>
+        /// Reads current command from the console
+        /// </summary>
+        /// <returns>Returns clear command</returns>
         private string ReadCommand()
         {
             Console.Write("Enter a row and column (space separated): ");
             string command = Console.ReadLine();
             return command.Trim();
         }
-
+        /// <summary>
+        /// Parse the command and calls the appropriate method
+        /// </summary>
+        /// <param name="command">Entered command</param>
         private void ExecuteCommand(string command)
         {
             switch (command)
@@ -94,6 +106,11 @@ namespace BalloonsPops
             }
         }
 
+        /// <summary>
+        /// Checks and parse the coordinates
+        /// </summary>
+        /// <param name="stringCoordinates">Entered cooradinates from user</param>
+        /// <returns>A valid coordinates</returns>
         private int[] CordinateParser(string stringCoordinates)
         {
             var coordinatesStringArray = Regex.Split(stringCoordinates, @"\s+");
@@ -119,6 +136,10 @@ namespace BalloonsPops
             Console.WriteLine("Your moves: {0}", player.CurrentMoves);
         }
 
+        /// <summary>
+        /// Checks if the game is over
+        /// </summary>
+        /// <returns>return the current stage of the game</returns>
         private bool IsGameOver()
         {
             var isGameOver = true;
@@ -135,13 +156,17 @@ namespace BalloonsPops
             return isGameOver;
         }
 
+
         private void StartNewGame()
         {
             this.player.CurrentMoves = 0;
             var gameBoardArray = GameBoardGenerator.GenerateGameBoard(Config.GameBoardHeight, Config.GameBoardWidth, Config.MaxColorCount);
             this.GameBoard = new GameBoard(gameBoardArray);
         }
-
+        /// <summary>
+        /// Shoot the baloon from the current coordinates and take them down :):D(:
+        /// </summary>
+        /// <param name="coordinates">entard coordinates</param>
         private void Shoot(int[] coordinates)
         {
             var gameBoard = this.GameBoard.Entities;
@@ -160,7 +185,11 @@ namespace BalloonsPops
             }
 
         }
-
+        /// <summary>
+        /// Checks the upper baloons if it is the same like the shooted one and take them down
+        /// </summary>
+        /// <param name="gameBoard">game field</param>
+        /// <param name="coordinates">entared coordinates</param>
         private void PopUp(IEntity[,] gameBoard, int[] coordinates )
         {
             int col = coordinates[0];
@@ -179,7 +208,11 @@ namespace BalloonsPops
                 }
             }
         }
-
+        /// <summary>
+        /// Checks the unders baloons from the current selected and take them down
+        /// </summary>
+        /// <param name="gameBoard">game field</param>
+        /// <param name="coordinates">entared coordinates</param>
         private void PopDown(IEntity[,]  gameBoard, int[] coordinates)
         {
             int col = coordinates[0];
@@ -198,7 +231,11 @@ namespace BalloonsPops
                 }
             }
         }
-
+        /// <summary>
+        /// Checks the left side baloons from the current selected and teka them down
+        /// </summary>
+        /// <param name="gameBoard">game field</param>
+        /// <param name="coordinates">entared coordinates</param>
         private void PopLeft(IEntity[,] gameBoard, int[] coordinates)
         {
             int col = coordinates[0];
