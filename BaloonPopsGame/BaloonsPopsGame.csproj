@@ -52,6 +52,8 @@
     <Compile Include="BaloonPopsGame.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="Data\TopPlayers.cs" />
+    <Compile Include="Exceptions\InvalidCommand.cs" />
+    <Compile Include="Exceptions\InvalidCoordinates.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IGameBoard.cs" />
     <Compile Include="Interfaces\IRendered.cs" />

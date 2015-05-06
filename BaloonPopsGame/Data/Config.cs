@@ -6,5 +6,6 @@ namespace BalloonsPops.Data
         public const int GameBoardHeight = 5;
         public const int GameBoardWidth = 10;
         public const int MaxColorCount = 10;
+        public const string topPlayerFile = "topPlayers.txt";
     }
 }
