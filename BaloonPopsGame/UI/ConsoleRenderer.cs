@@ -18,7 +18,7 @@ namespace BalloonsPops.Utilities
             {
                 if (i == 0)
                 {
-                    Console.Write("  ");
+                    Console.Write("    ");
                 }
                 else
                 {
@@ -26,6 +26,17 @@ namespace BalloonsPops.Utilities
                 }
             }
             Console.WriteLine();
+            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("    ");
+                }
+                else
+                {
+                    Console.Write("- ");
+                }
+            }
             Console.WriteLine();
 
             var rowCounter = 0;
@@ -37,7 +48,7 @@ namespace BalloonsPops.Utilities
                     if (col == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write(rowCounter + " ");
+                        Console.Write(rowCounter + " | ");
                     }
                     else
                     {
