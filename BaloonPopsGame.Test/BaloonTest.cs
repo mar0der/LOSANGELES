@@ -3,33 +3,40 @@
     using System;
     using BalloonsPops.Data;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class BaloonTest
     {
-       [TestMethod]
+        private Color color;
+        private Baloon firstBaloon;
+        private Baloon secondBaloon;
+
+        [TestInitialize]
+        public void Init()
+        {
+            this.color = new Color(ConsoleColor.Black, 2);
+            this.firstBaloon = new Baloon("x", color);
+            this.secondBaloon = new Baloon("x", color);
+        }
+
+
+        [TestMethod]
         public void Test_ComapreTwoSameBaloons_ShouldReturnTrue()
         {
-            var color1 = new Color(ConsoleColor.Black, 2);
-            var baloon1 = new Baloon("x", color1);
-            var baloon2 = new Baloon("x", color1);
-            Assert.AreEqual(baloon1, baloon2);
+            Assert.AreEqual(this.firstBaloon, this.secondBaloon);
         }
 
         [TestMethod]
         public void Test_CompareTwoDifferentBaloons_ShouldReturnFalse()
         {
-            var color1 = new Color(ConsoleColor.Black, 2);
-            var baloon1 = new Baloon("x", color1);
-            var baloon2 = new Baloon("y", color1);
-            Assert.AreNotEqual(baloon1, baloon2);
+            var newBaloon = new Baloon("y", this.color);
+            Assert.AreNotEqual(newBaloon, this.firstBaloon);
         }
 
         [TestMethod]
         public void Test_CompareWithNonBaloonObjet_ShouldReturnFalse()
         {
-            var color1 = new Color(ConsoleColor.Black, 2);
-            var baloon1 = new Baloon("y", color1);
-            Assert.AreNotEqual(baloon1, color1);
+            Assert.AreNotEqual(this.firstBaloon, this.color);
         }
     }
 }
