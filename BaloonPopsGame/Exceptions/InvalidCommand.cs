@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BalloonsPops.Exceptions
+﻿namespace BalloonsPops.Exceptions
 {
+    using System;
+
     public class InvalidCommand : ApplicationException
     {
         public InvalidCommand(string msg)

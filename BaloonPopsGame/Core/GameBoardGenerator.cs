@@ -23,7 +23,7 @@ namespace BalloonsPops.Core
             {
                 for (int col = 0; col < boardWidth; col++)
                 {
-                    color = ColorFactory.getRandomColor();
+                    color = ColorFactory.GetRandomColor(maxCoulorCount);
                     newBaloon = new Baloon(color.ColorId.ToString(), color);
                     gameBoard[row, col] = newBaloon;
                 }

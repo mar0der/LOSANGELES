@@ -6,11 +6,10 @@ namespace BalloonsPops.Core
     public static class ColorFactory
     {
         private static Random random = new Random();
-        private const int MaxColorNumber = 4;
 
-        public static Color getRandomColor()
+        public static Color GetRandomColor(int maxColorCount)
         {
-            var randomColorId = random.Next(MaxColorNumber);
+            var randomColorId = random.Next(maxColorCount);
             switch (randomColorId)
             {
                 case 0:

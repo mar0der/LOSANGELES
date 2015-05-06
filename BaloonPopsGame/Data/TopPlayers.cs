@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Remoting.Messaging;
-using System.Linq;
-
-namespace BalloonsPops.Data
+﻿namespace BalloonsPops.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
     public sealed class TopPlayers
     {
         private static object syncLock = new object();
@@ -16,7 +15,6 @@ namespace BalloonsPops.Data
             this.PlayersMoves = new Dictionary<string, int>();
             this.LoadDataFromFile();
         }
-
 
         public static TopPlayers Instance
         {
@@ -58,11 +56,11 @@ namespace BalloonsPops.Data
         public Dictionary<string, int> GetHighScore()
         {
             return this.PlayersMoves;
-        } 
+        }
 
         private void SaveDataToFile()
         {
-            using (StreamWriter writer = new StreamWriter(Config.topPlayerFile))
+            using (StreamWriter writer = new StreamWriter(Config.TopPlayerFile))
             {
                 string line;
                 foreach (KeyValuePair<string, int> score in this.PlayersMoves)
@@ -86,7 +84,7 @@ namespace BalloonsPops.Data
             {
                 if (File.Exists("topPlayers.txt"))
                 {
-                    using (StreamReader reader = new StreamReader(Config.topPlayerFile))
+                    using (StreamReader reader = new StreamReader(Config.TopPlayerFile))
                     {
                         string line;
                         string[] data;
@@ -105,9 +103,5 @@ namespace BalloonsPops.Data
                 throw new ApplicationException(e.Message);
             }
         }
-
-        
-
-   
     }
 }
