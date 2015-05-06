@@ -7,9 +7,8 @@
     {
         private string name;
             
-        public Player(string name)
+        public Player()
         {
-            this.Name = name;
         }
 
         public string Name

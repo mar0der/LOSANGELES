@@ -34,22 +34,8 @@ namespace BalloonsPops
         public void Run()
         {
             topPlayers = TopPlayers.Instance;
-
-            while (true)
-            {
-                try
-                {
-                    Console.Write("Please enter your name:");
-                    var name = Console.ReadLine();
-                    player = new Player(name);
-                    break;
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine(e.Message);
-                    //TODO: catch all errors
-                }
-            }
+            player = new Player();
+           
 
             this.StartNewGame();
             this.consoleRenderer = new ConsoleRenderer();
@@ -97,6 +83,8 @@ namespace BalloonsPops
                     break;
                 case "top":
                     this.printTopPlayers();
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadLine();
                     break;
                 case "restart":
                     this.StartNewGame();
@@ -133,10 +121,21 @@ namespace BalloonsPops
             Console.WriteLine("Welcome to \"Balloons Pops\" game. Please try to pop the balloons. Use 'top' to view the top scoreboard,'restart' to start a new game and 'exit' to quit the game.");
         }
 
-        private void printTopPlayers(){
-            foreach (KeyValuePair<string, int> player in topPlayers.PlayersMoves)
+        private void printTopPlayers()
+        {
+            Console.WriteLine("Scoreboard:");
+            int playerPosition = 0;;
+            if (this.topPlayers.PlayersMoves.Count > 0)
             {
-                Console.WriteLine(player.Key + ":" + player.Value);
+                foreach (KeyValuePair<string, int> player in topPlayers.PlayersMoves)
+                {
+                    playerPosition++;
+                    Console.WriteLine("{0}. {1} --> {2}", playerPosition, player.Key, player.Value);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No saved results.");
             }
         }
 
@@ -189,11 +188,36 @@ namespace BalloonsPops
             this.player.CurrentMoves++;
             if (IsGameOver())
             {
-                Console.WriteLine("Game Over");
-                this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
+                if (this.topPlayers.IsTopResult(this.player.CurrentMoves))
+                {
+                    setPlayerName();
+                    this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
+                }
+
+                printTopPlayers();
+                Console.ReadLine();
                 this.StartNewGame();
             }
 
+        }
+
+        private void setPlayerName()
+        {
+            while (true)
+            {
+                try
+                {
+                    Console.Write("Please enter your name:");
+                    var name = Console.ReadLine();
+                    this.player.Name = name;
+                    break;
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine(e.Message);
+                    //TODO: catch all errors
+                }
+            }
         }
         /// <summary>
         /// Checks the upper baloons if it is the same like the shooted one and take them down

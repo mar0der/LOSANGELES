@@ -47,7 +47,10 @@ namespace BalloonsPops.Data
                 this.PlayersMoves.Add(name, moves);
             }
 
-            this.PlayersMoves = this.PlayersMoves.OrderBy(s => s.Value).Take(5).ToDictionary(s => s.Key, s => s.Value);
+            this.PlayersMoves = this.PlayersMoves
+                .OrderBy(s => s.Value)
+                .Take(5)
+                .ToDictionary(s => s.Key, s => s.Value);
 
             this.SaveDataToFile();
         }
@@ -70,26 +73,36 @@ namespace BalloonsPops.Data
             }
         }
 
+        public bool IsTopResult(int moves)
+        {
+            var betterUsers = this.PlayersMoves.Where(p => p.Value <= moves).Count();
+
+            return betterUsers < 5;
+        }
+
         private void LoadDataFromFile()
         {
             try
             {
-                using (StreamReader reader = new StreamReader("topPlayers.txt"))
+                if (File.Exists("topPlayers.txt"))
                 {
-                    string line;
-                    string[] data;
-                    int moves;
-                    while ((line = reader.ReadLine()) != null)
+                    using (StreamReader reader = new StreamReader("topPlayers.txt"))
                     {
-                        data = line.Split(':');
-                        moves = int.Parse(data[1]);
-                        this.PlayersMoves.Add(data[0], moves);
+                        string line;
+                        string[] data;
+                        int moves;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            data = line.Split(':');
+                            moves = int.Parse(data[1]);
+                            this.PlayersMoves.Add(data[0], moves);
+                        }
                     }
                 }
             }
             catch (IOException e)
             {
-                throw new ApplicationException("Can not read top players file.");
+                throw new ApplicationException(e.Message);
             }
         }
 
