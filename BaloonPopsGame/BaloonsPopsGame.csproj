@@ -44,31 +44,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ColorFactory.cs" />
-    <Compile Include="Core\Command.cs" />
     <Compile Include="Core\GameBoardGenerator.cs" />
     <Compile Include="Data\Baloon.cs" />
     <Compile Include="Data\Color.cs" />
     <Compile Include="Data\Config.cs" />
-    <Compile Include="Data\Coordinates.cs" />
-    <Compile Include="Data\Coordinates1.cs" />
     <Compile Include="Data\GameBoard.cs" />
-    <Compile Include="BaloonsPopGame.cs" />
+    <Compile Include="BaloonPopsGame.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="Data\TopPlayers.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IGameBoard.cs" />
     <Compile Include="Interfaces\IRendered.cs" />
-    <Compile Include="Utilities\ConsoleRenderer.cs" />
+    <Compile Include="UI\ConsoleRenderer.cs" />
     <Content Include="TopScore.txt" />
     <Compile Include="Core\Engine.cs" />
-    <Compile Include="Data\GameBoard1.cs" />
-    <Compile Include="Data\Person.cs" />
-    <Compile Include="Core\PersonScoreComparer.cs" />
-    <Compile Include="Baloons.cs" />
-    <Compile Include="Data\TopScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

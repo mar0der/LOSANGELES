@@ -26,6 +26,4 @@ namespace BalloonsPops.Core
             }
         }
     }
-
-
 }

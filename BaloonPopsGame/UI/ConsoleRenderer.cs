@@ -7,6 +7,10 @@ namespace BalloonsPops.Utilities
 
     public class ConsoleRenderer : IRenderer
     {
+        /// <summary>
+        /// Class for rendering the gamebord to the console screen
+        /// </summary>
+        /// <param name="gameBoard">An Object that implements Igameboard</param>
         public void Render(IGameBoard gameBoard)
         {
             Console.ForegroundColor = ConsoleColor.White;
