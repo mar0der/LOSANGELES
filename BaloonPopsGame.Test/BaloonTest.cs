@@ -38,5 +38,19 @@
         {
             Assert.AreNotEqual(this.firstBaloon, this.color);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void Test_SetInvalidColorInBaloon_ShouldThrowException()
+        {
+            Baloon baloon = new Baloon("a", null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void Test_SetInvalidSymbolInBaloon_ShouldThrowException()
+        {
+            Baloon baloon = new Baloon("", color);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace BalloonsPops.Core
 
         public static Color getRandomColor()
         {
-            var randomColorId = GetRandomNumber();
+            var randomColorId = random.Next(MaxColorNumber);
             switch (randomColorId)
             {
                 case 0:
@@ -24,11 +24,6 @@ namespace BalloonsPops.Core
                 default:
                     throw new ApplicationException("Invalid color id!");
             }
-        }
-
-        private static int GetRandomNumber()
-        {
-            return random.Next(MaxColorNumber); ;
         }
     }
 }

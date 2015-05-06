@@ -5,6 +5,8 @@ namespace BaloonsPopGame.Tests
     using BalloonsPops.Data;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
+    using BalloonsPops.Exceptions;
+
     [TestClass]
     public class PlayerTest
     {
@@ -25,14 +27,14 @@ namespace BaloonsPopGame.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "The name must be at least 2 characters")]
+        [ExpectedException(typeof(InvalidCommand), "The name must be at least 2 characters")]
         public void Test_SetShordUsername_ShouldThrowExeption()
         {
             this.player.Name = "";
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "The name must be at least 2 characters")]
+        [ExpectedException(typeof(InvalidCommand), "The name must be at least 2 characters")]
         public void Test_SetInvaidCharacters_ShouldThrowExeption()
         {
             this.player.Name = "#$@";

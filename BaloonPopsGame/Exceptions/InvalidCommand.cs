@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BalloonsPops.Exceptions
 {
-    class InvalidCommand : ApplicationException
+    public class InvalidCommand : ApplicationException
     {
         public InvalidCommand(string msg)
             : base(msg)
