@@ -13,12 +13,13 @@ namespace BaloonsPopGame.Tests
         [TestInitialize]
         public void Init()
         {
-            this.player = new Player("pesho");
+            this.player = new Player();
         }
 
         [TestMethod]
         public void Test_CreateValidPlayer_ShouldHaveCorrectValues()
         {
+            this.player.Name = "pesho";
             Assert.AreEqual("pesho", this.player.Name);
             Assert.AreEqual(0, player.CurrentMoves);
         }
@@ -27,7 +28,7 @@ namespace BaloonsPopGame.Tests
         [ExpectedException(typeof(ArgumentException), "The name must be at least 2 characters")]
         public void Test_SetInvalidUsername_ShouldThrowExeption()
         {
-            this.player = new Player("g");
+            this.player.Name = "";
         }
     }
 }
