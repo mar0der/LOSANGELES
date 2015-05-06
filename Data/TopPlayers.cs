@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Remoting.Messaging;
+using System.Linq;
 
 namespace BalloonsPops.Data
 {
@@ -7,10 +10,11 @@ namespace BalloonsPops.Data
     {
         private static object syncLock = new object();
         private static volatile TopPlayers instance;
+
         private TopPlayers()
         {
-            this.LoadDataFromFile();
             this.PlayersMoves = new Dictionary<string, int>();
+            this.LoadDataFromFile();
         }
 
 
@@ -22,6 +26,7 @@ namespace BalloonsPops.Data
                 {
                     instance = new TopPlayers();
                 }
+
                 return instance;
             }
         }
@@ -30,26 +35,62 @@ namespace BalloonsPops.Data
 
         public void AddScore(string name, int moves)
         {
-            this.PlayersMoves.Add(name, moves);
+            if (this.PlayersMoves.ContainsKey(name))
+            {
+                if (this.PlayersMoves[name] > moves)
+                {
+                    this.PlayersMoves[name] = moves;
+                }
+            }
+            else
+            {
+                this.PlayersMoves.Add(name, moves);
+            }
+
+            this.PlayersMoves = this.PlayersMoves.OrderBy(s => s.Value).Take(5).ToDictionary(s => s.Key, s => s.Value);
+
             this.SaveDataToFile();
         }
 
         public Dictionary<string, int> GetHighScore()
         {
-            var tempDict = new Dictionary<string, int>();
-            //TODO: sort the dictionary
-            return tempDict;
-
+            return this.PlayersMoves;
         } 
 
         private void SaveDataToFile()
         {
-            //TODO: write strigified player score
+            using (StreamWriter writer = new StreamWriter("topPlayers.txt"))
+            {
+                string line;
+                foreach (KeyValuePair<string, int> score in this.PlayersMoves)
+                {
+                    line = score.Key + ":" + score.Value;
+                    writer.WriteLine(line);
+                }
+            }
         }
 
         private void LoadDataFromFile()
         {
-            //TODO: load strigified player score
+            try
+            {
+                using (StreamReader reader = new StreamReader("topPlayers.txt"))
+                {
+                    string line;
+                    string[] data;
+                    int moves;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        data = line.Split(':');
+                        moves = int.Parse(data[1]);
+                        this.PlayersMoves.Add(data[0], moves);
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                throw new ApplicationException("Can not read top players file.");
+            }
         }
 
         

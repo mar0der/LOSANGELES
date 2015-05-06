@@ -2,6 +2,7 @@
 
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using System.Linq;
 using BalloonsPops.Core;
 using BalloonsPops.Interfaces;
 using BalloonsPops.Utilities;
@@ -11,6 +12,7 @@ namespace BalloonsPops
     using System;
     using System.Text.RegularExpressions;
     using BalloonsPops.Data;
+    using System.Collections.Generic;
 
     public class Engine
     {
@@ -39,9 +41,9 @@ namespace BalloonsPops
                     player = new Player(name);
                     break;
                 }
-                catch (ArgumentException)
+                catch (ArgumentException e)
                 {
-                    Console.WriteLine("error");
+                    Console.WriteLine(e.Message);
                     //TODO: catch all errors
                 }
             }
@@ -82,7 +84,7 @@ namespace BalloonsPops
                     this.isGameRunning = false;
                     break;
                 case "top":
-                    //TODO: Show Hightscore
+                    this.printTopPlayers();
                     break;
                 case "restart":
                     this.StartNewGame();
@@ -113,6 +115,14 @@ namespace BalloonsPops
         {
             Console.WriteLine("Welcome to \"Balloons Pops\" game. Please try to pop the balloons. Use 'top' to view the top scoreboard,'restart' to start a new game and 'exit' to quit the game.");
         }
+
+        private void printTopPlayers(){
+            foreach (KeyValuePair<string, int> player in topPlayers.PlayersMoves)
+            {
+                Console.WriteLine(player.Key + ":" + player.Value);
+            }
+        }
+
 
         private void PrintCurrentScore()
         {
