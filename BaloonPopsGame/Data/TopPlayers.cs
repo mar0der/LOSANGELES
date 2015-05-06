@@ -62,7 +62,7 @@ namespace BalloonsPops.Data
 
         private void SaveDataToFile()
         {
-            using (StreamWriter writer = new StreamWriter("topPlayers.txt"))
+            using (StreamWriter writer = new StreamWriter(Config.topPlayerFile))
             {
                 string line;
                 foreach (KeyValuePair<string, int> score in this.PlayersMoves)
@@ -86,7 +86,7 @@ namespace BalloonsPops.Data
             {
                 if (File.Exists("topPlayers.txt"))
                 {
-                    using (StreamReader reader = new StreamReader("topPlayers.txt"))
+                    using (StreamReader reader = new StreamReader(Config.topPlayerFile))
                     {
                         string line;
                         string[] data;

@@ -13,6 +13,7 @@ namespace BalloonsPops
     using System.Text.RegularExpressions;
     using BalloonsPops.Data;
     using System.Collections.Generic;
+    using BalloonsPops.Exceptions;
 
     public class Engine
     {
@@ -50,14 +51,23 @@ namespace BalloonsPops
         /// </summary>
         protected virtual void ExecuteLoop()
         {
-            //Render All Objects
-            Console.Clear();
-            this.PrintStaticText();
-            this.PrintCurrentScore();
-            this.consoleRenderer.Render(this.GameBoard);
-            //Read Input
-            this.ExecuteCommand(this.ReadCommand());
-            //some logc
+            try
+            {
+                 //Render All Objects
+                Console.Clear();
+                this.PrintStaticText();
+                this.PrintCurrentScore();
+                this.consoleRenderer.Render(this.GameBoard);
+                //Read Input
+                this.ExecuteCommand(this.ReadCommand());
+                //some logc
+            }
+            catch (ApplicationException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Press enter and try again.");
+                Console.ReadLine();
+            }
         }
 
         /// <summary>
@@ -83,7 +93,7 @@ namespace BalloonsPops
                     break;
                 case "top":
                     this.printTopPlayers();
-                    Console.WriteLine("Press any key to continue...");
+                    Console.WriteLine("Press enter key to continue...");
                     Console.ReadLine();
                     break;
                 case "restart":
@@ -105,15 +115,24 @@ namespace BalloonsPops
         {
             var coordinatesStringArray = Regex.Split(stringCoordinates, @"\s+");
 
+            if (coordinatesStringArray.Length < 2)
+            {
+                throw new InvalidCommand("Invalid command.");
+            }
             int x;
             int y;
             if (int.TryParse(coordinatesStringArray[0], out y) && int.TryParse(coordinatesStringArray[1], out x))
             {
                 //TODO: validate coordinates 
-                return new int[]{x,y};
+                if (x < 0 || x > Config.GameBoardWidth - 1 || y < 0 || y > Config.GameBoardHeight - 1)
+                {
+                    throw new InvalidCoordinates("Invalid coordinates.");
+                }
+
+               return new int[] { x, y };
             }
 
-            throw new ApplicationException("Invalid command.");
+            throw new InvalidCoordinates("Invalid coordinates.");
         }
 
         private void PrintStaticText()
@@ -212,7 +231,7 @@ namespace BalloonsPops
                     this.player.Name = name;
                     break;
                 }
-                catch (ArgumentException e)
+                catch (InvalidCommand e)
                 {
                     Console.WriteLine(e.Message);
                     //TODO: catch all errors

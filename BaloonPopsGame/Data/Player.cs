@@ -1,5 +1,6 @@
 ﻿namespace BalloonsPops.Data
 {
+    using BalloonsPops.Exceptions;
     using System;
     using System.Text.RegularExpressions;
 
@@ -22,7 +23,7 @@
 
                 if (!Regex.IsMatch(value, @"^\w{2,}$"))
                 {
-                    throw new ArgumentException("The name must be at least 2 characters");
+                    throw new InvalidCommand("The name must be at least 2 characters, only letters and digits.");
                 }
 
                 this.name = value;

@@ -22,7 +22,7 @@ namespace BalloonsPops.Core
                 case 3:
                     return new Color(ConsoleColor.Yellow, randomColorId);
                 default:
-                    throw new ArgumentException("Invalid color id!");
+                    throw new ApplicationException("Invalid color id!");
             }
         }
 
