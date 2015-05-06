@@ -20,13 +20,14 @@
             }
             set
             {
-
-                if (!Regex.IsMatch(value, @"^\w{2,}$"))
+                string clearValue = value.Trim();
+                clearValue = Regex.Replace(clearValue, " {2,}", " ");
+                if (clearValue.Length < 2 || Regex.IsMatch(clearValue, "[^a-zA-Z0-9 _]+"))
                 {
-                    throw new InvalidCommand("The name must be at least 2 characters, only letters and digits.");
+                    throw new InvalidCommand("The name must be at least 2 characters, only letters, digits and space.");
                 }
 
-                this.name = value;
+                this.name = clearValue;
             }
         }
 

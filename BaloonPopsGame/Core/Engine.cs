@@ -54,10 +54,7 @@ namespace BalloonsPops
             try
             {
                  //Render All Objects
-                Console.Clear();
-                this.PrintStaticText();
-                this.PrintCurrentScore();
-                this.consoleRenderer.Render(this.GameBoard);
+                this.UpdateConsole();
                 //Read Input
                 this.ExecuteCommand(this.ReadCommand());
                 //some logc
@@ -65,9 +62,17 @@ namespace BalloonsPops
             catch (ApplicationException e)
             {
                 Console.WriteLine(e.Message);
-                Console.WriteLine("Press enter and try again.");
-                Console.ReadLine();
+                Console.WriteLine("Press any key and try again.");
+                Console.ReadKey();
             }
+        }
+
+        private void UpdateConsole()
+        {
+            Console.Clear();
+            this.PrintStaticText();
+            this.PrintCurrentScore();
+            this.consoleRenderer.Render(this.GameBoard);
         }
 
         /// <summary>
@@ -90,11 +95,12 @@ namespace BalloonsPops
             {
                 case "exit":
                     this.isGameRunning = false;
+                    Console.WriteLine("Goodbye!");
                     break;
                 case "top":
                     this.printTopPlayers();
-                    Console.WriteLine("Press enter key to continue...");
-                    Console.ReadLine();
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
                     break;
                 case "restart":
                     this.StartNewGame();
@@ -198,6 +204,11 @@ namespace BalloonsPops
         private void Shoot(int[] coordinates)
         {
             var gameBoard = this.GameBoard.Entities;
+            if (gameBoard[coordinates[1], coordinates[0]].Symbol ==  ".")
+            {
+                throw new ApplicationException("Illegal move: cannot pop missing ballon!");
+            }
+
             this.PopUp(gameBoard, coordinates);
             this.PopDown(gameBoard, coordinates);
             this.PopLeft(gameBoard, coordinates);
@@ -207,15 +218,21 @@ namespace BalloonsPops
             this.player.CurrentMoves++;
             if (IsGameOver())
             {
+                this.UpdateConsole();
                 if (this.topPlayers.IsTopResult(this.player.CurrentMoves))
                 {
                     setPlayerName();
                     this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
-                }
 
-                printTopPlayers();
-                Console.ReadLine();
-                this.StartNewGame();
+                    this.printTopPlayers();
+                    Console.WriteLine("Goodbye!");
+                    Console.ReadKey();
+                    this.isGameRunning = false;
+                }
+                else
+                {
+                    this.StartNewGame();
+                }
             }
 
         }
@@ -226,7 +243,8 @@ namespace BalloonsPops
             {
                 try
                 {
-                    Console.Write("Please enter your name:");
+                    Console.WriteLine("Congratulations! You popped all baloons in {0} moves.", this.player.CurrentMoves);
+                    Console.Write("Please enter your name for the top scoreboard: ");
                     var name = Console.ReadLine();
                     this.player.Name = name;
                     break;
