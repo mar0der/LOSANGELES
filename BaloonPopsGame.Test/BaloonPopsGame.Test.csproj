@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -52,6 +55,7 @@
   <ItemGroup>
     <Compile Include="BaloonTest.cs" />
     <Compile Include="GameBoardTest.cs" />
+    <Compile Include="Mocks\MoqTest.cs" />
     <Compile Include="PlayerTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +65,10 @@
       <Project>{a1269ef5-33bd-4caa-927a-afa7c821b940}</Project>
       <Name>BaloonsPopsGame</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

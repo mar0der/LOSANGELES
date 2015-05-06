@@ -26,9 +26,16 @@ namespace BaloonsPopGame.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "The name must be at least 2 characters")]
-        public void Test_SetInvalidUsername_ShouldThrowExeption()
+        public void Test_SetShordUsername_ShouldThrowExeption()
         {
             this.player.Name = "";
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "The name must be at least 2 characters")]
+        public void Test_SetInvaidCharacters_ShouldThrowExeption()
+        {
+            this.player.Name = "#$@";
         }
     }
 }
