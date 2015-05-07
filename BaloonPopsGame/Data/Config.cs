@@ -1,5 +1,4 @@
-﻿
-namespace BalloonsPops.Data
+﻿namespace BalloonsPops.Data
 {
     public static class Config
     {

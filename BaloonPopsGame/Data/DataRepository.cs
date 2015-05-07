@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using BalloonsPops.Data;
-using BalloonsPops.Interfaces;
-
-namespace BalloonsPops
+﻿namespace BalloonsPops
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using BalloonsPops.Interfaces;
+
     public class DataRepository : IDataRepository
     {
-
         public bool Save(Dictionary<string, int> data, string dataName)
         {
             try

@@ -19,6 +19,7 @@
             {
                 throw new InvalidCommand("Invalid command.");
             }
+
             int row;
             int col;
             if (int.TryParse(coordinatesStringArray[0], out row) && int.TryParse(coordinatesStringArray[1], out col))

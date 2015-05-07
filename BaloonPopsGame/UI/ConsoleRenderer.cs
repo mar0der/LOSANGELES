@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace BalloonsPops.Utilities
+﻿namespace BalloonsPops.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
-    using BalloonsPops.Interfaces;
+    using Interfaces;
 
     public class ConsoleRenderer : IRenderer
     {
@@ -32,9 +31,9 @@ namespace BalloonsPops.Utilities
                     {
                         Console.ForegroundColor = gameBoard.Entities[row, col - 1].Color.ConsoleColor;
                         Console.Write(gameBoard.Entities[row, col - 1].Symbol + " ");
-
                     }
                 }
+
                 Console.WriteLine();
                 Console.WriteLine();
                 rowCounter++;
@@ -42,40 +41,11 @@ namespace BalloonsPops.Utilities
 
             Console.ForegroundColor = ConsoleColor.White;
         }
-
-        private void BuildHeader(IGameBoard gameBoard)
-        {
-            var output = new StringBuilder();
-            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
-            {
-                if (i == 0)
-                {
-                   Console.Write("    ");
-                }
-                else
-                {
-                    Console.Write(i - 1 + " ");
-                }
-            }
-            Console.WriteLine();
-            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
-            {
-                if (i == 0)
-                {
-                    Console.Write("    ");
-                }
-                else
-                {
-                    Console.Write("- ");
-                }
-            }
-            Console.WriteLine();
-        }
-
-        public void PrintTopPlayers(Dictionary<string, int> playerMoves )
+        
+        public void PrintTopPlayers(Dictionary<string, int> playerMoves)
         {
             Console.WriteLine("Scoreboard:");
-            int playerPosition = 0; ;
+            int playerPosition = 0;
             if (playerMoves.Count > 0)
             {
                 foreach (KeyValuePair<string, int> player in playerMoves)
@@ -98,6 +68,37 @@ namespace BalloonsPops.Utilities
         public void PrintStaticText(string text)
         {
             Console.WriteLine(text);
+        }
+
+        private void BuildHeader(IGameBoard gameBoard)
+        {
+            var output = new StringBuilder();
+            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("    ");
+                }
+                else
+                {
+                    Console.Write(i - 1 + " ");
+                }
+            }
+
+            Console.WriteLine();
+            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("    ");
+                }
+                else
+                {
+                    Console.Write("- ");
+                }
+            }
+
+            Console.WriteLine();
         }
     }
 }

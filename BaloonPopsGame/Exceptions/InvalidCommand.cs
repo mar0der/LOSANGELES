@@ -7,7 +7,6 @@
         public InvalidCommand(string msg)
             : base(msg)
         {
-
         }
     }
 }

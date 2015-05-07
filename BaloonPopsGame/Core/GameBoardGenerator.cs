@@ -1,15 +1,12 @@
-﻿using System;
-
-namespace BalloonsPops.Core
+﻿namespace BalloonsPops.Core
 {
-    using BalloonsPops.Data;
+    using System;
+    using Data;
 
     public static class GameBoardGenerator
     {
-
         public static Baloon[,] GenerateGameBoard(int boardHeight, int boardWidth, int maxCoulorCount)
         {
-
             if (boardHeight <= 0 || boardWidth <= 0 || maxCoulorCount <= 0)
             {
                 throw new ApplicationException("The board size and color count must be positive number");
@@ -28,8 +25,8 @@ namespace BalloonsPops.Core
                     gameBoard[row, col] = newBaloon;
                 }
             }
+
             return gameBoard;
         }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace BalloonsPops.Data
 {
     using System;
+
     public class Color
     {
         public Color(ConsoleColor consoleColor, int colorId)

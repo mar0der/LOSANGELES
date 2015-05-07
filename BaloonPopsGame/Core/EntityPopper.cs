@@ -1,9 +1,8 @@
-﻿using System;
-using BalloonsPops.Data;
-using BalloonsPops.Interfaces;
-
-namespace BalloonsPops.Core
+﻿namespace BalloonsPops.Core
 {
+    using System;
+    using Interfaces;
+
     public class EntityPopper
     {
         private IEntity[,] gameBoard;
@@ -36,6 +35,7 @@ namespace BalloonsPops.Core
                 }
             }
         }
+
         /// <summary>
         /// Checks if the down baloons is the same as the shooted one and take them down
         /// </summary>
@@ -46,10 +46,11 @@ namespace BalloonsPops.Core
             int row = coordinates[0];
             int col = coordinates[1];
             int rowCounter = row;
-            while (rowCounter < gameBoard.GetLength(0) - 1)
+
+            while (rowCounter < this.gameBoard.GetLength(0) - 1)
             {
                 rowCounter++;
-                if (gameBoard[rowCounter, col].Equals(gameBoard[row, col]))
+                if (this.gameBoard[rowCounter, col].Equals(this.gameBoard[row, col]))
                 {
                     this.Pop(new int[] { rowCounter, col });
                 }
@@ -73,7 +74,7 @@ namespace BalloonsPops.Core
             while (colCounter > 0)
             {
                 colCounter--;
-                if (gameBoard[row, colCounter].Equals(gameBoard[row, col]))
+                if (this.gameBoard[row, colCounter].Equals(this.gameBoard[row, col]))
                 {
                     this.Pop(new int[] { row, colCounter });
                 }
@@ -94,10 +95,10 @@ namespace BalloonsPops.Core
             int row = coordinates[0];
             int col = coordinates[1];
             int colCounter = col;
-            while (colCounter < gameBoard.GetLength(1) - 1)
+            while (colCounter < this.gameBoard.GetLength(1) - 1)
             {
                 colCounter++;
-                if (gameBoard[row, colCounter].Equals(gameBoard[row, col]))
+                if (this.gameBoard[row, colCounter].Equals(this.gameBoard[row, col]))
                 {
                     this.Pop(new int[] { row, colCounter });
                 }

@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace BalloonsPops.Interfaces
+﻿namespace BalloonsPops.Interfaces
 {
-    interface IRenderer
+    public interface IRenderer
     {
         void RenderGameBoard(IGameBoard gameBoard);
     }

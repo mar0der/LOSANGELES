@@ -1,29 +1,18 @@
-﻿
-
-using System.Security.Cryptography.X509Certificates;
-using System.Xml;
-using System.Linq;
-using BalloonsPops.Core;
-using BalloonsPops.Interfaces;
-using BalloonsPops.Utilities;
-
-namespace BalloonsPops
+﻿namespace BalloonsPops
 {
     using System;
-    using System.Text.RegularExpressions;
-    using BalloonsPops.Data;
-    using System.Collections.Generic;
-    using BalloonsPops.Exceptions;
+    using Core;
+    using Data;
+    using Exceptions;
+    using Utilities;
 
     public class Engine
     {
-
         private bool isGameRunning = true;
         private ConsoleRenderer consoleRenderer;
         private Player player;
         private TopPlayers topPlayers;
         private DataRepository dataRepository;
-
 
         public GameBoard GameBoard { get; set; }
 
@@ -34,19 +23,19 @@ namespace BalloonsPops
         /// </summary>
         public void Run()
         {
-            topPlayers = TopPlayers.Instance;
+            this.topPlayers = TopPlayers.Instance;
             this.dataRepository = new DataRepository();
-            topPlayers.Load(dataRepository);
-            player = new Player();
-
+            this.topPlayers.Load(this.dataRepository);
+            this.player = new Player();
             this.StartNewGame();
             this.consoleRenderer = new ConsoleRenderer();
 
-            while (isGameRunning)
+            while (this.isGameRunning)
             {
                 this.ExecuteLoop();
             }
         }
+
         /// <summary>
         /// Method that controll all operations in the game loop
         /// </summary>
@@ -54,11 +43,8 @@ namespace BalloonsPops
         {
             try
             {
-                //RenderGameBoard All Objects
                 this.UpdateConsole();
-                //Read Input
                 this.ExecuteCommand(this.ReadCommand());
-                //some logc
             }
             catch (ApplicationException e)
             {
@@ -131,9 +117,9 @@ namespace BalloonsPops
                     }
                 }
             }
+
             return isGameOver;
         }
-
 
         private void StartNewGame()
         {
@@ -141,8 +127,8 @@ namespace BalloonsPops
             var gameBoardArray = GameBoardGenerator.GenerateGameBoard(Config.GameBoardHeight, Config.GameBoardWidth, Config.MaxColorCount);
             this.GameBoard = new GameBoard(gameBoardArray);
             this.EntityPopper = new EntityPopper(this.GameBoard.Entities);
-
         }
+
         /// <summary>
         /// Shoot the baloon from the current coordinates and take them down :):D(:
         /// </summary>
@@ -162,12 +148,12 @@ namespace BalloonsPops
             this.EntityPopper.Pop(coordinates);
             this.GameBoard.Drop();
             this.player.CurrentMoves++;
-            if (IsGameOver())
+            if (this.IsGameOver())
             {
                 this.UpdateConsole();
                 if (this.topPlayers.IsTopResult(this.player.CurrentMoves))
                 {
-                    SetPlayerName();
+                    this.SetPlayerName();
                     this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
                     this.dataRepository.Save(this.topPlayers.PlayersMoves, Config.TopPlayerFile);
                     this.consoleRenderer.PrintTopPlayers(this.topPlayers.PlayersMoves);
@@ -180,7 +166,6 @@ namespace BalloonsPops
                     this.StartNewGame();
                 }
             }
-
         }
 
         private void SetPlayerName()

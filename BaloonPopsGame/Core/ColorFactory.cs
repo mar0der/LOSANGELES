@@ -1,8 +1,8 @@
-﻿using System;
-using BalloonsPops.Data;
-
-namespace BalloonsPops.Core
+﻿namespace BalloonsPops.Core
 {
+    using System;
+    using Data;
+
     public static class ColorFactory
     {
         private static Random random = new Random();

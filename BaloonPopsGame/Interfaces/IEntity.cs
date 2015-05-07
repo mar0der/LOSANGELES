@@ -7,6 +7,5 @@
         Color Color { get; set; }
 
         string Symbol { get; set; }
-
     }
 }

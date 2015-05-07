@@ -1,7 +1,7 @@
 ﻿namespace BalloonsPops.Data
 {
-    using BalloonsPops.Interfaces;
     using System;
+    using Interfaces;
 
     public class Baloon : IEntity
     {
@@ -20,6 +20,7 @@
             {
                 return this.color;
             }
+
             set
             {
                 if (value == null)
@@ -37,6 +38,7 @@
             {
                 return this.symbol;
             }
+
             set
             {
                 if (value.Length == 0)
@@ -57,7 +59,6 @@
             }
 
             return this.Symbol.CompareTo(((Baloon)obj).Symbol) == 0 ? true : false;
-            
         }
     }
 }

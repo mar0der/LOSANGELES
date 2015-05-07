@@ -1,23 +1,16 @@
-﻿using BalloonsPops.Interfaces;
-
-namespace BalloonsPops.Data
+﻿namespace BalloonsPops.Data
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
+    using Interfaces;
 
     public sealed class TopPlayers
     {
-        private static object syncLock = new object();
         private static volatile TopPlayers instance;
 
         private TopPlayers()
         {
         }
-
-        private IDataRepository DataRepository { get; set; }
-
 
         public static TopPlayers Instance
         {
@@ -32,13 +25,15 @@ namespace BalloonsPops.Data
             }
         }
 
+        public IDataRepository DataRepository { get; set; }
+
+        public Dictionary<string, int> PlayersMoves { get; set; }
+
         public void Load(IDataRepository dataRepository)
         {
             this.DataRepository = dataRepository;
             this.PlayersMoves = this.DataRepository.Load(Config.TopPlayerFile);
         }
-
-        public Dictionary<string, int> PlayersMoves { get; set; }
 
         public void AddScore(string name, int moves)
         {
@@ -58,7 +53,6 @@ namespace BalloonsPops.Data
                 .OrderBy(s => s.Value)
                 .Take(5)
                 .ToDictionary(s => s.Key, s => s.Value);
-
         }
 
         public bool IsTopResult(int moves)

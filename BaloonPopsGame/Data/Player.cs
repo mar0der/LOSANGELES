@@ -1,23 +1,19 @@
 ﻿namespace BalloonsPops.Data
 {
-    using BalloonsPops.Exceptions;
-    using System;
     using System.Text.RegularExpressions;
+    using BalloonsPops.Exceptions;
 
     public class Player
     {
         private string name;
-            
-        public Player()
-        {
-        }
-
+ 
         public string Name
         {
             get 
             {
                 return this.name; 
             }
+
             set
             {
                 string clearValue = value.Trim();
