@@ -59,6 +59,11 @@
     <Compile Include="GameBoardGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ColorFactoryTest.cs" />
+    <Compile Include="DataRepositoryTests.cs" />
+    <Compile Include="TopPlayersTests.cs" />
+    <Compile Include="ConsoleRendererTests.cs" />
+    <Compile Include="EntityPopperTests.cs" />
+    <Compile Include="CoordinateParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaloonPopsGame\BaloonsPopsGame.csproj">

@@ -1,4 +1,6 @@
-﻿namespace BalloonsPops.Data
+﻿using BalloonsPops.Interfaces;
+
+namespace BalloonsPops.Data
 {
     using System;
     using System.Collections.Generic;
@@ -12,9 +14,10 @@
 
         private TopPlayers()
         {
-            this.PlayersMoves = new Dictionary<string, int>();
-            this.LoadDataFromFile();
         }
+
+        private IDataRepository DataRepository { get; set; }
+
 
         public static TopPlayers Instance
         {
@@ -27,6 +30,12 @@
 
                 return instance;
             }
+        }
+
+        public void Load(IDataRepository dataRepository)
+        {
+            this.DataRepository = dataRepository;
+            this.PlayersMoves = this.DataRepository.Load(Config.TopPlayerFile);
         }
 
         public Dictionary<string, int> PlayersMoves { get; set; }
@@ -50,58 +59,13 @@
                 .Take(5)
                 .ToDictionary(s => s.Key, s => s.Value);
 
-            this.SaveDataToFile();
-        }
-
-        public Dictionary<string, int> GetHighScore()
-        {
-            return this.PlayersMoves;
-        }
-
-        private void SaveDataToFile()
-        {
-            using (StreamWriter writer = new StreamWriter(Config.TopPlayerFile))
-            {
-                string line;
-                foreach (KeyValuePair<string, int> score in this.PlayersMoves)
-                {
-                    line = score.Key + ":" + score.Value;
-                    writer.WriteLine(line);
-                }
-            }
         }
 
         public bool IsTopResult(int moves)
         {
             var betterUsers = this.PlayersMoves.Where(p => p.Value <= moves).Count();
 
-            return betterUsers < 5;
-        }
-
-        private void LoadDataFromFile()
-        {
-            try
-            {
-                if (File.Exists("topPlayers.txt"))
-                {
-                    using (StreamReader reader = new StreamReader(Config.TopPlayerFile))
-                    {
-                        string line;
-                        string[] data;
-                        int moves;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            data = line.Split(':');
-                            moves = int.Parse(data[1]);
-                            this.PlayersMoves.Add(data[0], moves);
-                        }
-                    }
-                }
-            }
-            catch (IOException e)
-            {
-                throw new ApplicationException(e.Message);
-            }
+            return betterUsers < Config.NumberOfTopResutsShown;
         }
     }
 }

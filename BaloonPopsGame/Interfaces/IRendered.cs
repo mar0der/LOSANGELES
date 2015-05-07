@@ -4,6 +4,6 @@ namespace BalloonsPops.Interfaces
 {
     interface IRenderer
     {
-        void Render(IGameBoard gameBoard);
+        void RenderGameBoard(IGameBoard gameBoard);
     }
 }

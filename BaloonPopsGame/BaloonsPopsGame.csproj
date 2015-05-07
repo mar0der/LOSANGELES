@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ColorFactory.cs" />
+    <Compile Include="Core\EntityPopper.cs" />
     <Compile Include="Core\GameBoardGenerator.cs" />
+    <Compile Include="Data\DataRepository.cs" />
     <Compile Include="Data\Baloon.cs" />
     <Compile Include="Data\Color.cs" />
     <Compile Include="Data\Config.cs" />
@@ -57,10 +59,12 @@
     <Compile Include="Data\TopPlayers.cs" />
     <Compile Include="Exceptions\InvalidCommand.cs" />
     <Compile Include="Exceptions\InvalidCoordinates.cs" />
+    <Compile Include="Interfaces\IDataRepository.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IGameBoard.cs" />
     <Compile Include="Interfaces\IRendered.cs" />
     <Compile Include="UI\ConsoleRenderer.cs" />
+    <Compile Include="Utilities\CoordinateParser.cs" />
     <Content Include="TopScore.txt" />
     <Compile Include="Core\Engine.cs" />
   </ItemGroup>

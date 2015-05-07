@@ -1,8 +1,9 @@
-﻿using System;
-using System.Runtime.Remoting.Channels;
+﻿using System.Collections.Generic;
 
 namespace BalloonsPops.Utilities
 {
+    using System;
+    using System.Text;
     using BalloonsPops.Interfaces;
 
     public class ConsoleRenderer : IRenderer
@@ -11,33 +12,10 @@ namespace BalloonsPops.Utilities
         /// Class for rendering the gamebord to the console screen
         /// </summary>
         /// <param name="gameBoard">An Object that implements Igameboard</param>
-        public void Render(IGameBoard gameBoard)
+        public void RenderGameBoard(IGameBoard gameBoard)
         {
             Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
-            {
-                if (i == 0)
-                {
-                    Console.Write("    ");
-                }
-                else
-                {
-                    Console.Write(i - 1 + " ");
-                }
-            }
-            Console.WriteLine();
-            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
-            {
-                if (i == 0)
-                {
-                    Console.Write("    ");
-                }
-                else
-                {
-                    Console.Write("- ");
-                }
-            }
-            Console.WriteLine();
+            this.BuildHeader(gameBoard);
 
             var rowCounter = 0;
 
@@ -63,6 +41,63 @@ namespace BalloonsPops.Utilities
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void BuildHeader(IGameBoard gameBoard)
+        {
+            var output = new StringBuilder();
+            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
+            {
+                if (i == 0)
+                {
+                   Console.Write("    ");
+                }
+                else
+                {
+                    Console.Write(i - 1 + " ");
+                }
+            }
+            Console.WriteLine();
+            for (int i = 0; i < gameBoard.Entities.GetLength(1) + 1; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("    ");
+                }
+                else
+                {
+                    Console.Write("- ");
+                }
+            }
+            Console.WriteLine();
+        }
+
+        public void PrintTopPlayers(Dictionary<string, int> playerMoves )
+        {
+            Console.WriteLine("Scoreboard:");
+            int playerPosition = 0; ;
+            if (playerMoves.Count > 0)
+            {
+                foreach (KeyValuePair<string, int> player in playerMoves)
+                {
+                    playerPosition++;
+                    Console.WriteLine("{0}. {1} --> {2}", playerPosition, player.Key, player.Value);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No saved results.");
+            }
+        }
+
+        public void PrintCurrentScore(int currentMoves)
+        {
+            Console.WriteLine("Your moves: {0}", currentMoves);
+        }
+
+        public void PrintStaticText(string text)
+        {
+            Console.WriteLine(text);
         }
     }
 }

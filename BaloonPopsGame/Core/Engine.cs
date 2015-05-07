@@ -22,25 +22,26 @@ namespace BalloonsPops
         private ConsoleRenderer consoleRenderer;
         private Player player;
         private TopPlayers topPlayers;
-        
+        private DataRepository dataRepository;
 
-        public Engine()
-        {
-        }
 
         public GameBoard GameBoard { get; set; }
+
+        public EntityPopper EntityPopper { get; set; }
+
         /// <summary>
         /// The Game starting loop
         /// </summary>
         public void Run()
         {
             topPlayers = TopPlayers.Instance;
+            this.dataRepository = new DataRepository();
+            topPlayers.Load(dataRepository);
             player = new Player();
-           
 
             this.StartNewGame();
             this.consoleRenderer = new ConsoleRenderer();
-            
+
             while (isGameRunning)
             {
                 this.ExecuteLoop();
@@ -53,7 +54,7 @@ namespace BalloonsPops
         {
             try
             {
-                 //Render All Objects
+                //RenderGameBoard All Objects
                 this.UpdateConsole();
                 //Read Input
                 this.ExecuteCommand(this.ReadCommand());
@@ -70,9 +71,9 @@ namespace BalloonsPops
         private void UpdateConsole()
         {
             Console.Clear();
-            this.PrintStaticText();
-            this.PrintCurrentScore();
-            this.consoleRenderer.Render(this.GameBoard);
+            this.consoleRenderer.PrintStaticText("Welcome to \"Balloons Pops\" game. Please try to pop the balloons. Use 'top' to view the top scoreboard,'restart' to start a new game and 'exit' to quit the game.");
+            this.consoleRenderer.PrintCurrentScore(this.player.CurrentMoves);
+            this.consoleRenderer.RenderGameBoard(this.GameBoard);
         }
 
         /// <summary>
@@ -85,6 +86,7 @@ namespace BalloonsPops
             string command = Console.ReadLine();
             return command.Trim();
         }
+
         /// <summary>
         /// Parse the command and calls the appropriate method
         /// </summary>
@@ -98,7 +100,7 @@ namespace BalloonsPops
                     Console.WriteLine("Goodbye!");
                     break;
                 case "top":
-                    this.printTopPlayers();
+                    this.consoleRenderer.PrintTopPlayers(this.topPlayers.PlayersMoves);
                     Console.WriteLine("Press any key to continue...");
                     Console.ReadKey();
                     break;
@@ -106,68 +108,10 @@ namespace BalloonsPops
                     this.StartNewGame();
                     break;
                 default:
-                    int[] cordinates = CordinateParser(command);
+                    int[] cordinates = CoordinateParser.Parse(command);
                     this.Shoot(cordinates);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Checks and parse the coordinates
-        /// </summary>
-        /// <param name="stringCoordinates">Entered cooradinates from user</param>
-        /// <returns>A valid coordinates</returns>
-        private int[] CordinateParser(string stringCoordinates)
-        {
-            var coordinatesStringArray = Regex.Split(stringCoordinates, @"\s+");
-
-            if (coordinatesStringArray.Length < 2)
-            {
-                throw new InvalidCommand("Invalid command.");
-            }
-            int x;
-            int y;
-            if (int.TryParse(coordinatesStringArray[0], out y) && int.TryParse(coordinatesStringArray[1], out x))
-            {
-                //TODO: validate coordinates 
-                if (x < 0 || x > Config.GameBoardWidth - 1 || y < 0 || y > Config.GameBoardHeight - 1)
-                {
-                    throw new InvalidCoordinates("Invalid coordinates.");
-                }
-
-               return new int[] { x, y };
-            }
-
-            throw new InvalidCoordinates("Invalid coordinates.");
-        }
-
-        private void PrintStaticText()
-        {
-            Console.WriteLine("Welcome to \"Balloons Pops\" game. Please try to pop the balloons. Use 'top' to view the top scoreboard,'restart' to start a new game and 'exit' to quit the game.");
-        }
-
-        private void printTopPlayers()
-        {
-            Console.WriteLine("Scoreboard:");
-            int playerPosition = 0;;
-            if (this.topPlayers.PlayersMoves.Count > 0)
-            {
-                foreach (KeyValuePair<string, int> player in topPlayers.PlayersMoves)
-                {
-                    playerPosition++;
-                    Console.WriteLine("{0}. {1} --> {2}", playerPosition, player.Key, player.Value);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No saved results.");
-            }
-        }
-
-
-        private void PrintCurrentScore()
-        {
-            Console.WriteLine("Your moves: {0}", player.CurrentMoves);
         }
 
         /// <summary>
@@ -196,6 +140,8 @@ namespace BalloonsPops
             this.player.CurrentMoves = 0;
             var gameBoardArray = GameBoardGenerator.GenerateGameBoard(Config.GameBoardHeight, Config.GameBoardWidth, Config.MaxColorCount);
             this.GameBoard = new GameBoard(gameBoardArray);
+            this.EntityPopper = new EntityPopper(this.GameBoard.Entities);
+
         }
         /// <summary>
         /// Shoot the baloon from the current coordinates and take them down :):D(:
@@ -204,16 +150,16 @@ namespace BalloonsPops
         private void Shoot(int[] coordinates)
         {
             var gameBoard = this.GameBoard.Entities;
-            if (gameBoard[coordinates[1], coordinates[0]].Symbol ==  ".")
+            if (gameBoard[coordinates[0], coordinates[1]].Symbol == ".")
             {
                 throw new ApplicationException("Illegal move: cannot pop missing ballon!");
             }
 
-            this.PopUp(gameBoard, coordinates);
-            this.PopDown(gameBoard, coordinates);
-            this.PopLeft(gameBoard, coordinates);
-            this.PopRight(gameBoard, coordinates);
-            this.Pop(gameBoard[coordinates[1], coordinates[0]]);
+            this.EntityPopper.PopUp(coordinates);
+            this.EntityPopper.PopDown(coordinates);
+            this.EntityPopper.PopLeft(coordinates);
+            this.EntityPopper.PopRight(coordinates);
+            this.EntityPopper.Pop(coordinates);
             this.GameBoard.Drop();
             this.player.CurrentMoves++;
             if (IsGameOver())
@@ -221,10 +167,10 @@ namespace BalloonsPops
                 this.UpdateConsole();
                 if (this.topPlayers.IsTopResult(this.player.CurrentMoves))
                 {
-                    setPlayerName();
+                    SetPlayerName();
                     this.topPlayers.AddScore(this.player.Name, this.player.CurrentMoves);
-
-                    this.printTopPlayers();
+                    this.dataRepository.Save(this.topPlayers.PlayersMoves, Config.TopPlayerFile);
+                    this.consoleRenderer.PrintTopPlayers(this.topPlayers.PlayersMoves);
                     Console.WriteLine("Goodbye!");
                     Console.ReadKey();
                     this.isGameRunning = false;
@@ -237,7 +183,7 @@ namespace BalloonsPops
 
         }
 
-        private void setPlayerName()
+        private void SetPlayerName()
         {
             while (true)
             {
@@ -252,112 +198,8 @@ namespace BalloonsPops
                 catch (InvalidCommand e)
                 {
                     Console.WriteLine(e.Message);
-                    //TODO: catch all errors
                 }
             }
         }
-        /// <summary>
-        /// Checks the upper baloons if it is the same like the shooted one and take them down
-        /// </summary>
-        /// <param name="gameBoard">game field</param>
-        /// <param name="coordinates">entared coordinates</param>
-        private void PopUp(IEntity[,] gameBoard, int[] coordinates )
-        {
-            int col = coordinates[0];
-            int row = coordinates[1];
-            int rowCounter = row;
-            while (rowCounter > 0)
-            {
-                rowCounter--;
-                if (gameBoard[rowCounter, col].Equals(gameBoard[row, col]))
-                {
-                    this.Pop(gameBoard[rowCounter, col]);
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        /// <summary>
-        /// Checks if the down baloons is the same as the shooted one and take them down
-        /// </summary>
-        /// <param name="gameBoard">game field</param>
-        /// <param name="coordinates">entared coordinates</param>
-        private void PopDown(IEntity[,]  gameBoard, int[] coordinates)
-        {
-            int col = coordinates[0];
-            int row = coordinates[1];
-            int rowCounter = row;
-            while (rowCounter < gameBoard.GetLength(0) - 1)
-            {
-                rowCounter++;
-                if (gameBoard[rowCounter, col].Equals(gameBoard[row, col]))
-                {
-                    this.Pop(gameBoard[rowCounter, col]);
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        /// <summary>
-        /// Checks the left side baloons if it is the same like the shooted one and take them down
-        /// </summary>
-        /// <param name="gameBoard">game field</param>
-        /// <param name="coordinates">entared coordinates</param>
-        private void PopLeft(IEntity[,] gameBoard, int[] coordinates)
-        {
-            int col = coordinates[0];
-            int row = coordinates[1];
-            int colCounter = col;
-            while (colCounter > 0)
-            {
-                colCounter--;
-                if (gameBoard[row, colCounter].Equals(gameBoard[row, col]))
-                {
-                    this.Pop(gameBoard[row, colCounter]);
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        /// <summary>
-        /// Checks the right side baloons if it is the same like the shooted one and take them down
-        /// </summary>
-        /// <param name="gameBoard">game field</param>
-        /// <param name="coordinates">entared coordinates</param>
-        private void PopRight(IEntity[,] gameBoard, int[] coordinates)
-        {
-            int col = coordinates[0];
-            int row = coordinates[1];
-            int colCounter = col;
-            while (colCounter < gameBoard.GetLength(1) - 1)
-            {
-                colCounter++;
-                if (gameBoard[row, colCounter].Equals(gameBoard[row, col]))
-                {
-                    this.Pop(gameBoard[row, colCounter]);
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-        /// <summary>
-        /// Replace the shooted baloon with the dot
-        /// </summary>
-        /// <param name="entity">current shooted baloon</param>
-        private void Pop(IEntity entity)
-        {
-            entity.Color.ConsoleColor = ConsoleColor.White;
-            entity.Symbol = ".";
-        }
-
-
     }
 }
